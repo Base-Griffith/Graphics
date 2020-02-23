@@ -2,6 +2,8 @@
 #include "toBST.h"
 #include "bresenham.h"
 #include "tidy.h"
+
+
 node * root;
 using namespace std;
 

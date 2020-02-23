@@ -9,7 +9,8 @@
 
 using namespace std;
 
-extern node * root = new node;
+node * root = new node;
+
 void display();
 void reshape(int, int);
 void init1();
