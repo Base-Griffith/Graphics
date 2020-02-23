@@ -15,7 +15,7 @@ typedef struct node
 	node(int x) : val(x), llink(NULL), rlink(NULL) {}
 }node;
 
-node * root = new node ;
+extern node * root ;
 node* ArrToBST(vector<int> &arr);
 //Takes a sorted array as input
 
