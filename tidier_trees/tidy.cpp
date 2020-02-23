@@ -4,7 +4,7 @@
 #include "tidy.h"
 
 
-node * root;
+
 using namespace std;
 
 //node * root = new node;// the root node to the BST
