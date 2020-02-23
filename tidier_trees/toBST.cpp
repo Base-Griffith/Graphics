@@ -1,5 +1,6 @@
 #include"toBST.h"
 
+node * root = new node;
 node* ArrToBST(vector<int> &arr){
 
 	if(arr.size() == 0)
