@@ -3,8 +3,6 @@
 #include "bresenham.h"
 #include "tidy.h"
 
-
-
 using namespace std;
 
 //node * root = new node;// the root node to the BST
@@ -12,10 +10,7 @@ int rr=10;
 #define MINSEP 50
 #define YSCALE 30
 
-
-
-
-void setup(struct node *t, int level, int minsep, struct extreme *rmost, struct extreme *lmost)
+void setup(struct node *t, int level, int minsep, struct extreme &rmost, struct extreme &lmost)
 {
 	struct node *l, *r;
 	struct extreme lr, ll, rr, rl;
@@ -24,24 +19,24 @@ void setup(struct node *t, int level, int minsep, struct extreme *rmost, struct 
 
 	if (t == NULL)
 	{
-		lmost->lev = -1;
-		rmost->lev = -1;
+		lmost.lev = -1;
+		rmost.lev = -1;
 	}
 	else
 	{
 		t->ycoord = level;
 		l = t->llink;
 		r = t->rlink;
-		setup(l, minsep, level + 1, &lr, &ll);	// lr, ll etc not set yet?
-		setup(r, minsep, level + 1, &rr, &rl);
+		setup(l, minsep, level + 1, lr, ll);	// lr, ll etc not set yet?
+		setup(r, minsep, level + 1, rr, rl);
 		if (r == NULL && l == NULL)		// t is a leaf
 		{
-			rmost->addr = t;
-			lmost->addr = t;
-			rmost->lev = level;
-			lmost->lev = level;
-			rmost->off = 0;
-			lmost->off = 0;
+			rmost.addr = t;
+			lmost.addr = t;
+			rmost.lev = level;
+			lmost.lev = level;
+			rmost.off = 0;
+			lmost.off = 0;
 			t->offset = 0;
 		}
 		else					// t not a leaf
@@ -91,23 +86,23 @@ void setup(struct node *t, int level, int minsep, struct extreme *rmost, struct 
 
 			if ((rl.lev > ll.lev) || (t->llink == NULL))
 			{
-				lmost = &rl;
-				lmost->off += t->offset;
+				lmost = rl;
+				lmost.off += t->offset;
 			}
 			else
 			{
-				lmost = &ll;
-				lmost->off -= t->offset;
+				lmost = ll;
+				lmost.off -= t->offset;
 			}
 			if ((lr.lev > rr.lev) || (t->rlink == NULL))
 			{
-				rmost = &lr;
-				rmost->off -= t->offset;
+				rmost = lr;
+				rmost.off -= t->offset;
 			}
 			else
 			{
-				rmost = &rr;
-				rmost->off += t->offset;
+				rmost = rr;
+				rmost.off += t->offset;
 			}
 
 			if (l != NULL && l != t->llink)
@@ -192,9 +187,9 @@ void draw_tree(int cx = 0, int cy = 0, node *N = NULL)
 void tidy()
 {
 
-	extreme *rightmost, *leftmost;
+	extreme rightmost, leftmost;
 
-	setup (root,0,2,rightmost, leftmost);//Now keeping minsep=2, may have to change later
+	setup (root,0,2, rightmost, leftmost);//Now keeping minsep=2, may have to change later
 	petrify(root, 680);
 	draw_tree();
 

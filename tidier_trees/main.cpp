@@ -1,4 +1,4 @@
-#include <windows.h>
+//#include <windows.h>
 #include <vector>
 #include <GL/glut.h>    /* OpenGL Utility Toolkit header */
 
@@ -16,15 +16,16 @@ void reshape(int, int);
 void init1();
 
 
-int screen_w=glutGet(GLUT_SCREEN_WIDTH)-100;
-int screen_h=glutGet(GLUT_SCREEN_HEIGHT)-100;
+//int screen_w=glutGet(GLUT_SCREEN_WIDTH)-100;
+//int screen_h=glutGet(GLUT_SCREEN_HEIGHT)-100;
 
 void init1()
 {
 
     glutInitDisplayMode(GLUT_RGB);
     glutInitWindowPosition(0,0);
-    glutInitWindowSize(screen_w,screen_h);
+    //glutInitWindowSize(screen_w,screen_h);
+    glutInitWindowSize(1000, 1000);
     glutCreateWindow("Tidier Tree drawing");
     glutDisplayFunc(display);//Its a display callback
     glutReshapeFunc(reshape);//callback func to rehape window
@@ -68,7 +69,7 @@ void display()//one call to display function is considered one frame
 	glPointSize(2.0);
     tidy();
 
-    //glPointSize(10);//changing picel size
+    //glPointSize(10);//changing pixel size
    // glBegin(GL_POINTS);//to start specifying vertices/lines/polygons
 
         //bres_line( x0, y0, x1,y1);
@@ -89,12 +90,7 @@ void reshape(int w, int h)
 
     glMatrixMode(GL_PROJECTION);//changing to projection mode to change projection
     glLoadIdentity();//clears the transformation Matrix
-    gluOrtho2D(0,screen_w,0,screen_h);
-
+    gluOrtho2D(0,1000,0,1000);
 
     glMatrixMode(GL_MODELVIEW);//coming back to default mode to draw
-
-
 }
-
-
