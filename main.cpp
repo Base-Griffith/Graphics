@@ -45,16 +45,15 @@ int main(int argc, char **argv)
 	vector <int> arr;
 	
 	int choice1;
-	//cout << "Please enter the array: ";
-	cout<<"Enter choice : \n 1.Balanced \n 2.Unbalanced\n";
-	cin>>choice1;
 	
-	cout << "Enter n: ";
-	cin >> n;
-
+	l1:
+        cout<<"Enter choice : \n 1.Balanced \n 2.Unbalanced\n";
+	cin>>choice1;
 	
 	if(choice1==1)
 	{
+	    cout << "Enter n: ";
+        cin >> n;
 		cout << "Please enter the array: ";
 		for (int i = 0; i < n; ++i)
 		{
@@ -68,15 +67,17 @@ int main(int argc, char **argv)
 
 	else if(choice1==2)
 	{
+	    cout << "Enter n: ";
+        cin >> n;
 		srand(time(0));
 		for (int i = 0; i < n; ++i)
 		{
-		
 			root = unbalancedBST(root, rand());
 		}
-	}	
-	
+	}
 
+        else
+        goto l1;	
 	
 	struct extreme right, left;
 
