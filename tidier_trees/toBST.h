@@ -7,7 +7,7 @@ using namespace std;
 typedef struct node
 {
 	struct node *llink, *rlink;
-	int xcoord, ycoord;	// coordinates of this node
+	int x, y;	// coordinates of this node
 	int offset;		// distance to each son
 	int val;
 	bool thread;

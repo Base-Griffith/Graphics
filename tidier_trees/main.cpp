@@ -9,8 +9,6 @@
 
 using namespace std;
 
-//node * root = new node;
-
 void display();
 void reshape(int, int);
 void init1();
@@ -25,7 +23,7 @@ void init1()
     glutInitDisplayMode(GLUT_RGB);
     glutInitWindowPosition(0,0);
     //glutInitWindowSize(screen_w,screen_h);
-    glutInitWindowSize(1000, 1000);
+    glutInitWindowSize(1920, 1080);
     glutCreateWindow("Tidier Tree drawing");
     glutDisplayFunc(display);//Its a display callback
     glutReshapeFunc(reshape);//callback func to rehape window
@@ -38,17 +36,20 @@ int x0,y0,x1,y1,r;
 int main(int argc, char ** argv)
 {
 
-    int n;
-    vector <int> arr(10000000);
-    cout<<"Enter n";
-    cin>>n;
+	int n;
+	vector <int> arr;
+	cout<<"Enter n: ";
+	cin >> n;
 
-    cout << "Please enter the array: ";
-        for (int i = 0; i < n; ++i) cin >> arr[i];
+	cout << "Please enter the array: ";
+	for (int i = 0; i < n; ++i)
+	{
+		int tmp;
+		cin >> tmp;
+		arr.push_back(tmp);
+	}
 
-        root= ArrToBST(arr); // forms a BST
-
-    //cin>>x0>>y0>>r;
+        root = ArrToBST(arr); // forms a BST
     glutInit( &argc,argv);
     init1();
 
@@ -67,6 +68,7 @@ void display()//one call to display function is considered one frame
     //draw
     glColor3f(1.0, 0.0, 0.0);
 	glPointSize(2.0);
+	draw_pixel(0.0, 0.0);
     tidy();
 
     //glPointSize(10);//changing pixel size
@@ -86,11 +88,12 @@ void reshape(int w, int h)
 {
     //setting viewport and projection
     //viewport= area in the window where drawings will be displayed
-    glViewport(0,0,(GLsizei)w,(GLsizei)h);
+    //glViewport(0,0,(GLsizei)w,(GLsizei)h);
+    glViewport(0,0,1920,1080);
 
     glMatrixMode(GL_PROJECTION);//changing to projection mode to change projection
     glLoadIdentity();//clears the transformation Matrix
-    gluOrtho2D(0,1000,0,1000);
+    gluOrtho2D(-1000, 3920, 540, -540);
 
     glMatrixMode(GL_MODELVIEW);//coming back to default mode to draw
 }

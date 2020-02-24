@@ -3,12 +3,12 @@
 
 struct extreme
 {
-	struct node *addr;
-	int off;		// offset from root
-	int lev;		// tree level
+	struct node *adr;
+	int offset;		// offset from root
+	int level;		// tree level
 };
 
-void setup(struct node *t, int level, int minsep, struct extreme *rmost, struct extreme *lmost);
+void setup_tdr(struct node *t, int level, struct extreme &rmost, struct extreme &lmost);
 
 void petrify(struct node *t, int xpos);
 
