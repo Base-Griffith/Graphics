@@ -1,9 +1,10 @@
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
+#include <GL/glut.h>
 #include "toBST.h"
 #include "tidy.h"
 #include "bresenham.h"
-#include <stdlib.h>
-#include <time.h>
 
 using namespace std;
 
@@ -135,15 +136,14 @@ void petrify(struct node *t, int xpos)
 	}
 }
 
-void display_tree(struct node *root, int parx, int pary,int isRainbow)
+void display_tree(struct node *root, int parx, int pary, int isRainbow)
 {
-	srand( time(0));
 	if(isRainbow)
 	{
-		int r1=(rand()%2);
-		int r2=(rand()%2);
-		int r3= (rand()%2);
-		glColor3f(r1,r2,r3);
+		float r1=(rand()%256);
+		float r2=(rand()%256);
+		float r3= (rand()%256);
+		glColor3f(r1/255.0, r2/255.0, r3/255.0);
 	}
 
 	else
@@ -157,9 +157,9 @@ void display_tree(struct node *root, int parx, int pary,int isRainbow)
 		pary = curry;
 	}
 	if (root->llink != NULL)	
-		display_tree(root->llink, currx, curry);
+		display_tree(root->llink, currx, curry, isRainbow);
 	if (root->rlink != NULL)	
-		display_tree(root->rlink, currx, curry);
+		display_tree(root->rlink, currx, curry, isRainbow);
 	
 	bres_circle(currx, curry, RADIUS);	
 	bres_line(currx, curry, parx, pary);

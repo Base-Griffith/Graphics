@@ -19,6 +19,7 @@ void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 0.0);
 	glPointSize(2.0);
+	srand(time(0));
 	display_tree(root, 0, 0,isRainbow);
     glutSwapBuffers();
 }
