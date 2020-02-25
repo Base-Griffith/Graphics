@@ -2,6 +2,8 @@
 #include "toBST.h"
 #include "tidy.h"
 #include "bresenham.h"
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -133,8 +135,20 @@ void petrify(struct node *t, int xpos)
 	}
 }
 
-void display_tree(struct node *root, int parx, int pary)
+void display_tree(struct node *root, int parx, int pary,int isRainbow)
 {
+	srand( time(0));
+	if(isRainbow)
+	{
+		int r1=(rand()%2);
+		int r2=(rand()%2);
+		int r3= (rand()%2);
+		glColor3f(r1,r2,r3);
+	}
+
+	else
+		glColor3f(1,1,0);
+
 	int currx = root->x, curry = (root->y)*SCALE - 100;
 
 	if (parx == 0 && pary == 0)

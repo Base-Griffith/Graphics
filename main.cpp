@@ -6,6 +6,7 @@
 #include "tidy.h"
 
 struct node *root;
+int isRainbow=0;
 
 void post(struct node *head)
 {
@@ -18,8 +19,8 @@ void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glColor3f(1.0, 1.0, 0.0);
 	glPointSize(2.0);
-	display_tree(root, 0, 0);
-        glutSwapBuffers();
+	display_tree(root, 0, 0,isRainbow);
+    glutSwapBuffers();
 }
 
 void changeSize(int w, int h) {
@@ -44,15 +45,23 @@ int main(int argc, char **argv)
 	int n;
 	vector <int> arr;
 	
-	int choice1;
-	
+	system("color 04");
+	cout<<"****Tidier Drawing of Trees****\n";
+
+
+	cout<<"         TR Algorithm    \n\n";
+
+	cout<<"Welcome to the Implementation   \n";
+
+	int choice1,ch_rain;
+
 	l1:
-        cout<<"Enter choice : \n 1.Balanced \n 2.Unbalanced\n";
+    cout<<"Enter choice : \n 1.Balanced Tree \n 2.Unbalanced Tree\n";
 	cin>>choice1;
-	
+
 	if(choice1==1)
 	{
-	    cout << "Enter n: ";
+	    cout << "Enter no. of nodes: ";
         cin >> n;
 		cout << "Please enter the array: ";
 		for (int i = 0; i < n; ++i)
@@ -63,6 +72,8 @@ int main(int argc, char **argv)
 		}
 
 		root = toBST(arr);
+		/*cout<<"Displaying tree : \n";
+		printPostorder(root); */
 	}
 
 	else if(choice1==2)
@@ -74,10 +85,32 @@ int main(int argc, char **argv)
 		{
 			root = unbalancedBST(root, rand());
 		}
+
+		/*cout<<"Displaying tree : \n";
+		printPostorder(root); */
 	}
 
         else
-        goto l1;	
+        goto l1;
+
+    l2:
+    cout<<"Enter color choice : \n 1.Single color \n 2.Rainbow color\n";
+	cin>>ch_rain;
+
+	switch(ch_rain)
+	{
+		case 1:
+
+			isRainbow=0;
+			break;
+
+
+		case 2:
+			isRainbow=1;
+			break;
+
+		default:	goto l2; break;
+	}	
 	
 	struct extreme right, left;
 
