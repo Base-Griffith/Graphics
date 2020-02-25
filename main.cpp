@@ -7,6 +7,7 @@
 
 struct node *root;
 int isRainbow=0;
+int ptColor= 0;
 
 void post(struct node *head)
 {
@@ -17,7 +18,41 @@ void post(struct node *head)
 
 void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 0.0);
+
+	switch(color)
+	{
+		case 0:
+			break;
+		case 1://Violet
+			glColor3f(148.0/255.0, 0, 211.0/255.0);
+			break;
+
+		case 2://Indigo
+		 	glColor3f(75.0/255.0, 0, 130.0/255.0);
+			break;
+
+		case 3://Blue
+			glColor3f(0.0, 0.0, 1.0);
+			break;
+
+		case 4://Green
+			glColor3f(0.0, 1.0, 0.0);
+			break;
+
+		case 5://Yellow
+			glColor3f(1.0, 1.0, 0.0);
+			break;
+
+		case 6://Orange
+			glColor3f(1.0, 127.0/255.0, 0);
+			break;
+
+		case 7://Red
+			glColor3f(1.0, 0.0, 0.0);
+			break;
+	}
+	
+	//glColor3f(1.0, 1.0, 0.0);
 	glPointSize(2.0);
 	srand(time(0));
 	display_tree(root, 0, 0,isRainbow);
@@ -55,6 +90,7 @@ int main(int argc, char **argv)
 	cout<<"Welcome to the Implementation   \n";
 
 	int choice1,ch_rain;
+	char ch_color;
 
 	l1:
     cout<<"Enter choice : \n 1.Balanced Tree \n 2.Unbalanced Tree\n";
@@ -101,10 +137,62 @@ int main(int argc, char **argv)
 	switch(ch_rain)
 	{
 		case 1:
+			{
+				isRainbow=0;
 
-			isRainbow=0;
-			break;
+				l3:
+				cout<<"Enter Color : \n";
+				cout<<"V I B G Y O R \n";
+				cin>>ch_color;
 
+				switch(ch_color)
+				{
+					case 'v':
+					case 'V':
+						ptColor = 1;
+						break;
+
+					case 'i':
+					case 'I':
+						ptColor = 2;
+						break;
+
+					case 'b':
+					case 'B':
+						ptColor = 3;
+						break;
+
+					case 'g':
+					case 'G':
+						ptColor = 4;
+						break;
+
+					case 'y':
+					case 'Y':
+						ptColor = 5;
+						break;
+
+					case 'o':
+					case 'O':
+						ptColor = 6;
+						break;
+
+					case 'r':
+					case 'R':
+						ptColor = 7;
+						break;
+
+					default:
+						goto l3;
+						break;
+
+
+				}
+
+				
+				break;
+
+			}
 
 		case 2:
 			isRainbow=1;

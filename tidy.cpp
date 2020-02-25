@@ -146,8 +146,7 @@ void display_tree(struct node *root, int parx, int pary, int isRainbow)
 		glColor3f(r1/255.0, r2/255.0, r3/255.0);
 	}
 
-	else
-		glColor3f(1,1,0);
+	
 
 	int currx = root->x, curry = (root->y)*SCALE - 100;
 
