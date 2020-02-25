@@ -25,7 +25,7 @@ void renderScene() {
 void changeSize(int w, int h) {
 
 	// Set the viewport to be the entire window
-	glViewport(0, 0, 1920, 1080);
+	glViewport(0, 0, 1900, 1060);
 
 	// Use the Projection Matrix
 	glMatrixMode(GL_PROJECTION);
@@ -33,7 +33,7 @@ void changeSize(int w, int h) {
 	// Reset Matrix
 	glLoadIdentity();
 
-	gluOrtho2D(-2500, 2420, 740, -340);
+	gluOrtho2D(-1900, 1900, 1480, -640);
 
 	// Get Back to the Modelview
 	glMatrixMode(GL_MODELVIEW);
