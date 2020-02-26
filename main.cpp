@@ -50,7 +50,7 @@ void renderScene() {
 	glPointSize(2.0);
 	srand(time(0));
 	display_tree(root, 0, 0,isRainbow);
-    glutSwapBuffers();
+	glutSwapBuffers();
 }
 ///Utility function to change the size of the view port.
 ///
@@ -78,36 +78,30 @@ int main(int argc, char **argv)
 	int n;
 	//vector <int> arr;
 	
-	system("color 04");
-	cout<<"****Tidier Drawing of Trees****\n";
-
-
-	cout<<"         TR Algorithm    \n\n";
-
-	cout<<"Welcome to the Implementation   \n";
+	cout << "*************************************************************\n";
+	cout << "*************************************************************\n";
+	cout << "*************************************************************\n";
+	cout << "*************************************************************\n\n";
+	cout << "Welcome to our implementation of the Tilford - Reingold ";
+	cout << "Tree Drawing Algorithm.\n\n";
+	cout << "A project by\n";
+	cout << "Geeth Charan Reddy\n";
+	cout << "Keshav Kabra\n";
+	cout << "Rupanshu Soi\n\n\n";
 
 	int choice1,ch_rain;
 	char ch_color;
 
 	l1:
-    cout<<"Enter choice : \n 1.Balanced Tree \n 2.Unbalanced Tree\n";
+    cout<<"Enter choice : \n1.Balanced Tree \n2.Unbalanced Tree\n";
 	cin>>choice1;
 
 	if(choice1==1)
 	{
 	    cout << "Enter no. of nodes: ";
         cin >> n;
-		//cout << "Please enter the array: ";
-		// for (int i = 0; i < n; ++i)
-		// {
-		// 	int tmp;
-		// 	cin >> tmp;
-		// 	arr.push_back(tmp);
-		// }
         vector <int> arr(n);
 		root = toBST(arr);
-		/*cout<<"Displaying tree : \n";
-		printPostorder(root); */
 	}
 
 	else if(choice1==2)
@@ -119,16 +113,13 @@ int main(int argc, char **argv)
 		{
 			root = unbalancedBST(root, rand());
 		}
-
-		/*cout<<"Displaying tree : \n";
-		printPostorder(root); */
 	}
 
         else
         goto l1;
 
     l2:
-    cout<<"Enter color choice : \n 1.Single color \n 2.Rainbow color\n";
+    cout<<"Enter color choice : \n1.Single color \n2.Rainbow color\n";
 	cin>>ch_rain;
 
 	switch(ch_rain)
