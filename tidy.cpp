@@ -16,7 +16,7 @@ void setup(node* root, int level, extreme &rightmost, extreme &leftmost) {
 	node* left;
 	node* right;
 	extreme LR, LL, RR, RL;
-	int CURsep, ROOTsep, LOffsum, ROffsum;
+	int cursep, rootsep, loffsum, roffsum;
 	if (root == NULL) {
 		leftmost.level = -1;
 		rightmost.level = -1;
@@ -39,44 +39,44 @@ void setup(node* root, int level, extreme &rightmost, extreme &leftmost) {
 		else {
 
 			//Set up for subtree pushing. Place roots of subtrees minimum distance apart
-			CURsep = MINSEP;
-			ROOTsep = MINSEP;
-			LOffsum = 0;
-			ROffsum = 0;
+			cursep = MINSEP;
+			rootsep = MINSEP;
+			loffsum = 0;
+			roffsum = 0;
 			/*Now consider each level  in turn until one subtree is exhausted
 			pushing the subtrees apart when neccessary.*/
 			while (left != NULL && right != NULL) {
-				if (CURsep < MINSEP) {
-					ROOTsep = ROOTsep + (MINSEP - CURsep);
-					CURsep = MINSEP;
+				if (cursep < MINSEP) {
+					rootsep = rootsep + (MINSEP - cursep);
+					cursep = MINSEP;
 				}
 				//Advance left 
 				if (left->rlink != NULL) {
-					LOffsum = LOffsum + left->offset;
-					CURsep = CURsep - left->offset;
+					loffsum = loffsum + left->offset;
+					cursep = cursep - left->offset;
 					left = left->rlink;
 				}
 				else {
-					LOffsum = LOffsum - left->offset;
-					CURsep = CURsep + left->offset;
+					loffsum = loffsum - left->offset;
+					cursep = cursep + left->offset;
 					left = left->llink;
 				}
 				//Advance right
 				if (right->llink != NULL) {
-					ROffsum = ROffsum - right->offset;
-					CURsep = CURsep - right->offset;
+					roffsum = roffsum - right->offset;
+					cursep = cursep - right->offset;
 					right = right->llink;
 				}
 				else {
-					ROffsum = ROffsum + right->offset;
-					CURsep = CURsep + right->offset;
+					roffsum = roffsum + right->offset;
+					cursep = cursep + right->offset;
 					right = right->rlink;
 				}
 			}
 			/*Set the offset in node root and include it in accumulated offsets in right and left*/
-			root->offset = (ROOTsep + 1) / 2;
-			LOffsum = LOffsum - root->offset;
-			ROffsum = ROffsum + root->offset;
+			root->offset = (rootsep + 1) / 2;
+			loffsum = loffsum - root->offset;
+			roffsum = roffsum + root->offset;
 			/*Update extreme descendents information*/
 			if (RL.level > LL.level || root->llink == NULL) {
 				leftmost = RL;
@@ -98,8 +98,8 @@ void setup(node* root, int level, extreme &rightmost, extreme &leftmost) {
 			At most one thread needs to be inserted*/
 			if (left != NULL && left != root->llink) {
 				(RR.adr)->thread = true;
-				(RR.adr)->offset = abs((RR.offset + root->offset) - LOffsum);
-				if ((LOffsum - root->offset) <= RR.offset) {
+				(RR.adr)->offset = abs((RR.offset + root->offset) - loffsum);
+				if ((loffsum - root->offset) <= RR.offset) {
 					(RR.adr)->llink = left;
 				}
 				else {
@@ -108,8 +108,8 @@ void setup(node* root, int level, extreme &rightmost, extreme &leftmost) {
 			}
 			else if (right != NULL && right != root->rlink) {
 				(LL.adr)->thread = true;
-				(LL.adr)->offset = abs((LL.offset - root->offset) - ROffsum);
-				if ((ROffsum + root->offset) >= LL.offset) {
+				(LL.adr)->offset = abs((LL.offset - root->offset) - roffsum);
+				if ((roffsum + root->offset) >= LL.offset) {
 					(LL.adr)->rlink = right;
 				}
 				else {
