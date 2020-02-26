@@ -8,8 +8,8 @@
 
 using namespace std;
 
-#define MINSEP 200
-#define SCALE 60
+#define MINSEP 50
+#define SCALE 20
 #define RADIUS 10
 
 void setup(node* root, int level, extreme &rightmost, extreme &leftmost) {
