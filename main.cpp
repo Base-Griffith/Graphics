@@ -19,7 +19,7 @@ void post(struct node *head)
 void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	switch(color)
+	switch(ptColor)
 	{
 		case 0:
 			break;
