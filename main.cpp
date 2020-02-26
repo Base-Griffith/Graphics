@@ -4,18 +4,12 @@
 #include <GL/glut.h>
 #include "toBST.h"
 #include "tidy.h"
-
+///Global declaration of the pointer that points to the head of binary search tree.
 struct node *root;
 int isRainbow=0;
 int ptColor= 0;
 
-void post(struct node *head)
-{
-	if (!head) return;
-	post(head->llink);
-	post(head->rlink);
-}
-
+///A Glut utility function to display the tree.
 void renderScene() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -58,7 +52,10 @@ void renderScene() {
 	display_tree(root, 0, 0,isRainbow);
     glutSwapBuffers();
 }
-
+///Utility function to change the size of the view port.
+///
+///@param w Width of the view port.
+///@param h Height of the view port.
 void changeSize(int w, int h) {
 
 	// Set the viewport to be the entire window
@@ -75,11 +72,11 @@ void changeSize(int w, int h) {
 	// Get Back to the Modelview
 	glMatrixMode(GL_MODELVIEW);
 }
-
+///Main funciton to run the Tidier algorithm and display the tree.
 int main(int argc, char **argv)
 {
 	int n;
-	vector <int> arr;
+	//vector <int> arr;
 	
 	system("color 04");
 	cout<<"****Tidier Drawing of Trees****\n";
@@ -100,14 +97,14 @@ int main(int argc, char **argv)
 	{
 	    cout << "Enter no. of nodes: ";
         cin >> n;
-		cout << "Please enter the array: ";
-		for (int i = 0; i < n; ++i)
-		{
-			int tmp;
-			cin >> tmp;
-			arr.push_back(tmp);
-		}
-
+		//cout << "Please enter the array: ";
+		// for (int i = 0; i < n; ++i)
+		// {
+		// 	int tmp;
+		// 	cin >> tmp;
+		// 	arr.push_back(tmp);
+		// }
+        vector <int> arr(n);
 		root = toBST(arr);
 		/*cout<<"Displaying tree : \n";
 		printPostorder(root); */
