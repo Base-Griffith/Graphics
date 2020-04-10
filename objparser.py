@@ -1,7 +1,7 @@
 # Basic parser used for Wavefront .obj files to extract vertex coordinates
 # and turn them into immediate OpenGL calls
 
-with open("rocket_final.txt", "r") as file:
+with open("tree_final.txt", "r") as file:
   data = file.read()
   data = data.split('\n')
   data.pop()
@@ -24,7 +24,7 @@ with open("rocket_final.txt", "r") as file:
       vertex3 = int(line[2].split("/")[0])
       indices.append((vertex1, vertex2, vertex3))
 
-  with open("rocket_out.txt", "w") as outputfile:
+  with open("tree_out.txt", "w") as outputfile:
     for vtuple in indices:
       v1 = vertices[vtuple[0] - 1]
       v2 = vertices[vtuple[1] - 1]

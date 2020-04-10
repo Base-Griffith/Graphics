@@ -1,5 +1,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
+#include "rocket.cpp"
+#include "tree.cpp"
 
 inline void drawSun()
 {
@@ -110,7 +112,11 @@ inline void drawLaunchPad()
 
 inline void drawScene(double rx, double ry, double rz, double tx, double ty)
 {
-  drawSun();
   drawLaunchPad();
   drawRocket();
+
+  for (int i = 0; i < 1; ++i)
+    drawTree(i, 1);
+
+  drawSun();
 }
