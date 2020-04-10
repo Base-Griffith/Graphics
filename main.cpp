@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 #include <GL/glut.h>
 #include "scene.cpp"
 
@@ -13,7 +12,7 @@ double translate_y;
 
 void display()
 {
-  glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+  glClearColor(0.066, 0.619, 0.819, 1.0); // sky blue
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
@@ -23,13 +22,10 @@ void display()
   glRotatef(rotate_y, 0.0, 1.0, 0.0);
   glRotatef(rotate_z, 0.0, 0.0, 1.0);
 
-  drawLaunchPad();
-  drawRocket();
-  drawSun();
+  drawScene(rotate_x, rotate_y, rotate_z, translate_x, translate_y);
 
   glFlush();
   glutSwapBuffers();
- 
 }
 
 void specialKeys(int key, int x, int y)

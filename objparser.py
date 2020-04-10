@@ -1,4 +1,7 @@
-with open("rocket.txt", "r") as file:
+# Basic parser used for Wavefront .obj files to extract vertex coordinates
+# and turn them into immediate OpenGL calls
+
+with open("rocket_final.txt", "r") as file:
   data = file.read()
   data = data.split('\n')
   data.pop()
