@@ -1,10 +1,11 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
-inline void drawTree(int i, int layer)
+inline void drawTree(float xpos)
 {  
   glPushMatrix();
-    glTranslatef(-0.4, 0.0, -0.4);
+    glTranslatef(-0.95 + xpos, 0.0, 0.4);
+    glScalef(0.6, 0.6, 0.6);
 
   glColor3f(0.019, 0.380, 0.176);
 

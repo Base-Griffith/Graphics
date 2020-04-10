@@ -115,8 +115,8 @@ inline void drawScene(double rx, double ry, double rz, double tx, double ty)
   drawLaunchPad();
   drawRocket();
 
-  for (int i = 0; i < 1; ++i)
-    drawTree(i, 1);
+  for (float xpos = 0.1; xpos < 1.7; xpos += 0.1)
+    drawTree(xpos);
 
   drawSun();
 }

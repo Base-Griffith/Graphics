@@ -3671,13 +3671,13 @@ inline void drawRocket()
     glVertex3f(-0.014809, 0.039427, 0.075794);
   glEnd();
 
+  glColor3f(1.0, 0.0, 0.0);
+
   glBegin(GL_TRIANGLES);
     glVertex3f(0.029323, 0.09868, 0.0);
     glVertex3f(0.073044, 0.039427, 0.025072);
     glVertex3f(0.025395, 0.09868, 0.014662);
   glEnd();
-
-  glColor3f(1.0, 0.0, 0.0);
 
   glBegin(GL_TRIANGLES);
     glVertex3f(-0.0, 0.09868, -0.029324);
