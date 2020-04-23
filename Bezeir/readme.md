@@ -1,4 +1,4 @@
-Implementation of e de Castlejau algorithm	
+Implementation of de Castlejau algorithm	
 		for 2D Bezeir curves
 
 1. Left click to create Anchor points
