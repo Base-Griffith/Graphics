@@ -1,168 +1,125 @@
-#include <windows.h>
 #include <GL/glut.h>
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include "bresenham.h"
-using namespace std;
 
-struct point
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+struct Point
 {
-    float x,y;
+    double x, y;
 };
 
-vector <struct point > p;
+std::vector<struct Point> points;
 
-int degree = -1,radius = 5; // degree of curve  // Radius of anchor points
-int currIndex = -1;
-bool dragging = FALSE;
-void init();
-void display();
-void reshape(int, int);
 void drawBezier();
-float B(int n, int i, float t);
-int factorial(int n);
-void mouseFunc(int button, int state, int x, int y);
-void motionFunc(int x, int y);
 int checkAnchor(int x, int y);
 
-int main(int argc, char ** argv)
-{
-	glutInit( &argc,argv);
-	init();
-	glutMainLoop();
-	return 0;
-}
+///////////////////////////////////////////////////////////////////////////////// Global variables to capture program state
+///////////////////////////////////////////////////////////////////////////////
+int degree = -1;
+int radius = 5;
+int currIndex = -1;
+bool dragging = false;
+///////////////////////////////////////////////////////////////////////////////
 
-void init()
-{
-    glutInitDisplayMode(GLUT_RGB);
-    glutInitWindowPosition(400,0);
-    glutInitWindowSize(800,800);
-    glutCreateWindow("Bezeir Curve");
-    glutDisplayFunc(display);       //Its a display callback
-    glutReshapeFunc(reshape);       //callback func to rehape window
-    glutMouseFunc(mouseFunc);
-    glutMotionFunc(motionFunc);
-}
 
-void display()                      //one call to display function is considered one frame
+///////////////////////////////////////////////////////////////////////////////// GLUT Callback Functions
+///////////////////////////////////////////////////////////////////////////////
+void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT);   //to clear the frame everytime before drawing
-    glLoadIdentity();               //clears the transformation Matrix
-    glFlush();                      // to display the frame buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+    glLoadIdentity();
+
+    // TODO: change to glutSwapBuffers()
+    glFlush();
 }
 
 void reshape(int w, int h)
 {
-	glViewport(0,0,(GLsizei)w,(GLsizei)h);
-    glMatrixMode(GL_PROJECTION);    //changing to projection mode to change projection
-    glLoadIdentity();               //clears the transformation Matrix
-    gluOrtho2D(-400,400,-400,400);
-    glMatrixMode(GL_MODELVIEW);     //coming back to default mode to draw
-}
-
-
-void drawBezier()
-{
-    int n = degree;
-    struct point temp;
-    temp.x=0.0;     temp.y=0.0;
-
-    glPointSize(1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    for (int i = 0; i <= n; ++i)
-    {
-        bres_circle(p[i].x,p[i].y,radius); // To Mark anchor points of the curve
-    }
-
-    glBegin(GL_POINTS);
-    for(float t=0;t<=1;t+=0.0001)
-    {
-        temp.x=0.0;
-        temp.y=0.0;
-
-        for (int i = 0; i <= n; ++i)
-        {
-            float multFactor = B(n,i,t);
-            temp.x += multFactor*p[i].x;
-            temp.y += multFactor*p[i].y;
-        }
-        glVertex2f(temp.x,temp.y);
-    }
-    glEnd();
-    glFlush();
-}
-
-float B(int n, int i, float t)
-{
-    float nCi = factorial(n) / (factorial(n-i) * factorial(i));
-    float value =nCi * pow(1-t,n-i) * pow(t,i);
-    return value;
-}
-
-int factorial(int n)
-{
-    int fact = 1;
-    for(int i=2; i<=n; i++)
-      fact *=  i;
-    return fact;
+    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-400, 400, -400, 400);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void mouseFunc(int button, int state, int x, int y)
 {
-    struct point p1,p2;
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && (checkAnchor(x-400,400-y)>=0) )
-    {
-        currIndex = checkAnchor(x-400,400-y);
-        cout<<"Found Anchor "<<x<<","<<y<<endl;
-        p1.x = x-400;
-        p1.y = 400-y;
-
-        dragging  = (state == GLUT_DOWN );
-
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN &&
+       (checkAnchor(x - 400 , 400 - y) >= 0))
+    {        
+        currIndex = checkAnchor(x - 400, 400 - y);
+        std::cout << "Found anchor at (" << x << ", " << y << ")" << std::endl;
+        dragging = (state == GLUT_DOWN);
     }
 
-    else if(button == GLUT_LEFT_BUTTON && state == GLUT_UP && (checkAnchor(x-400,400-y)<0))
+    else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP &&
+            (checkAnchor(x - 400, 400 - y) < 0))
     {
-        degree ++ ;
-        p2.x = x-400;
-        p2.y = 400-y;
-        p.push_back(point());
-        p.back().x=p2.x;
-        p.back().y=p2.y;
+        degree++;
+
+        struct Point p = {x - 400.0f, 400.0f - y};
+        points.push_back(p);
+
         glBegin(GL_POINTS);
-        glVertex2f(p2.x,p2.y);
+          glVertex2f(p.x, p.y);
         glEnd();
         glFlush();
+
         drawBezier();
     }
 
-    else if(button == GLUT_RIGHT_BUTTON && state == GLUT_UP && (checkAnchor(x-400,400-y)>=0))
+    else if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP &&
+            (checkAnchor(x - 400, 400 - y) >= 0))
     {
-        int index1 = checkAnchor(x-400,400-y);
-        p.erase(p.begin() + index1);
+        int idx = checkAnchor(x - 400, 400 - y);
+        points.erase(points.begin() + idx);
+
         degree--;
+
         drawBezier();
     }
 }
 
 void motionFunc(int x, int y)
 {
-    if(dragging)
+    if (dragging)
     {
-        p[currIndex].x=x-400;
-        p[currIndex].y=400-y;
+        points[currIndex].x = x - 400;
+        points[currIndex].y = 400 - y;
+
         drawBezier();
     }
+}
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////// Math Utility Functions
+//////////////////////////////////////////////////////////////////////////////
+int factorial(int n)
+{
+    int fact = 1;
+    for(int i = 2; i <= n; i++)
+        fact *= i;
+    return fact;
+}
+
+float binomialCoeff(int n, int i, float t)
+{
+    float nCi = factorial(n) / (factorial(n-i) * factorial(i));
+    float value = nCi * pow(1 - t, n - i) * pow(t, i);
+    return value;
 }
 
 int checkAnchor(int x, int y)
 {
     for (int i = 0; i <= degree ; ++i)
     {
-        if( (pow(x-p[i].x,2)+pow(y-p[i].y,2)) <= pow(radius,2)) // check It lies within the circle of anchor
+        if( (pow(x-points[i].x,2)+pow(y-points[i].y,2)) <= pow(radius,2)) // check It lies within the circle of anchor
         {
             return i;
             break;
@@ -170,5 +127,61 @@ int checkAnchor(int x, int y)
     }
     return -1;
 }
+///////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Main Drawing Function
+///////////////////////////////////////////////////////////////////////////////
+void drawBezier()
+{
+    struct Point temp = {0.0f, 0.0f};
+
+    glPointSize(1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    // Marking anchor points of the curve
+    for (int i = 0; i <= degree; ++i)
+        bres_circle(points[i].x, points[i].y, radius);
+
+    glBegin(GL_POINTS);
+        for (float t = 0; t <= 1; t += 0.0001)
+        {
+            temp.x=0.0;
+            temp.y=0.0;
+    
+            for (int i = 0; i <= degree; ++i)
+            {
+                float multFactor = binomialCoeff(degree, i, t);
+                temp.x += multFactor * points[i].x;
+                temp.y += multFactor * points[i].y;
+            }
+            glVertex2f(temp.x, temp.y);
+        }
+    glEnd();
+    glFlush();
+}
+///////////////////////////////////////////////////////////////////////////////
+
+
+void init()
+{
+    glutInitDisplayMode(GLUT_RGB);
+    glutInitWindowPosition(400,0);
+    glutInitWindowSize(800,800);
+    glutCreateWindow("Bezier Curve");
+
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutMouseFunc(mouseFunc);
+    glutMotionFunc(motionFunc);
+}
+
+int main(int argc, char ** argv)
+{
+	glutInit(&argc,argv);
+	init();
+	glutMainLoop();
+	return 0;
+}
 
