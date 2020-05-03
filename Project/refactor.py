@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
-image = Image.open('smiley.png')
+image = Image.open('triangle.png')
 pixels = image.load()
 
 window = tk.Tk()
@@ -44,11 +44,28 @@ def shade_horizontally(point):
   return leftb, rightb
 
 def find_turns(point, leftb, rightb):
-  if pixels[point[0], point[1] + 1] == interior_color:
-    agenda[UP].append([(point[0], point[1] + 1)])  
-
-  if pixels[point[0], point[1] - 1] == interior_color:
-    agenda[DOWN].append([(point[0], point[1] - 1)])  
+  # S turns
+  i = leftb[0] + 1
+  y = leftb[1] + vdir
+  while i < rightb[0]:
+    if pixels[i, y] == interior_color:
+      agenda[vdir].append((i, y))
+      while pixels[i, y] == interior_color:
+        i += 1
+    else:
+      i += 1
+    
+  # U turns
+  S_turns_last = i 
+  j = rightb[0] + 1
+  y = rightb[1]
+  while j < S_turns_last:
+    if pixels[j, y] == interior_color:
+      agenda[-1 * vdir].append((j, y))
+      while pixels[j, y] == interior_color:
+        j += 1
+    else:
+      j += 1
 
 def agenda_non_empty():
   return (len(agenda[UP]) + len(agenda[DOWN]) > 0)
@@ -61,14 +78,14 @@ def shade(event):
   # Initialise agenda.
   # Note: All lines on the agenda have to be shaded when first accessed.
 
-  agenda[UP].append([origin])
-  agenda[DOWN].append([(origin[0], origin[1] - 1)])
+  agenda[UP].append(origin)
+  agenda[DOWN].append((origin[0], origin[1] - 1))
 
   while agenda_non_empty():
     if not agenda[vdir]:
       vdir *= -1
 
-    point = agenda[vdir].pop()[0]
+    point = agenda[vdir].pop()
     leftb, rightb = shade_horizontally(point)
     find_turns(point, leftb, rightb)
 
