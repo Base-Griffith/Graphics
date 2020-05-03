@@ -1,7 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+from colors import colors
 
-image = Image.open('triangle.png')
+image = Image.open('smiley.png')
 pixels = image.load()
 
 window = tk.Tk()
@@ -21,7 +22,7 @@ agenda = {UP : uplist, DOWN : downlist}
 
 origin = (0, 0)
 interior_color = (0, 0, 0, 0)
-color = (0, 0, 255, 255)
+color = colors['green']
 
 # Note: Y axis is inverted.
 vdir = UP
@@ -55,6 +56,17 @@ def find_turns(point, leftb, rightb):
     else:
       i += 1
     
+  # S inverted turns
+  i = leftb[0] + 1
+  y = leftb[1] - vdir
+  while i < rightb[0]:
+    if pixels[i, y] == interior_color:
+      agenda[-1 * vdir].append((i, y))
+      while pixels[i, y] == interior_color:
+        i += 1
+    else:
+      i += 1
+    
   # U turns
   S_turns_last = i 
   j = rightb[0] + 1
@@ -67,13 +79,12 @@ def find_turns(point, leftb, rightb):
     else:
       j += 1
 
-def agenda_non_empty():
-  return (len(agenda[UP]) + len(agenda[DOWN]) > 0)
-
 def shade(event):
   global origin, interior_color, vdir
   origin = (event.x, event.y)
   interior_color = pixels[origin]
+
+  print('Mouse click at ', str(origin))
 
   # Initialise agenda.
   # Note: All lines on the agenda have to be shaded when first accessed.
@@ -81,7 +92,7 @@ def shade(event):
   agenda[UP].append(origin)
   agenda[DOWN].append((origin[0], origin[1] - 1))
 
-  while agenda_non_empty():
+  while len(agenda[UP]) + len(agenda[DOWN]) > 0:
     if not agenda[vdir]:
       vdir *= -1
 
