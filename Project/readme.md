@@ -1,16 +1,19 @@
-# Usage
+# Shading Arbitrary Closed Regions
 
-refactor.py [-h] [-c COLOR] [-p PATTERN] [-f FILE]
-
-**Shade arbitrary closed regions**
-
+**Usage**  
 optional arguments:
-  -h, --help            show this help message and exit   
-  
+  -h, --help            show this help message and exit  
   -c COLOR, --color COLOR
-                        Choose a color   
-                        
+                        Choose a color  
   -p PATTERN, --pattern PATTERN
-                        Choose a shading pattern   
-                        
-  -f FILE, --file FILE  Choose an input file
+                        Choose a shading pattern  
+  -f FILE, --file FILE  Choose an input file  
+  -o OUT, --out OUT     Choose output file  
+  -cp CUSTOM_PATTERN, --custom-pattern CUSTOM_PATTERN
+                        Choose a file to use as custom fill pattern. The file
+                        must be atleast the same size as your input image.  
+
+Example usage:  
+
+`python3 refactor.py -f smiley.png -o out.png -p custom -cp custom.png`  
+will use `custom.png` as a fill pattern for `smiley.png` and save the result to `out.png`. Specifying `-p custom` is necessary to use a custom fill pattern.
