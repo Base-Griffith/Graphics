@@ -25,6 +25,13 @@ for i in range(image.size[1]):
     tmp.append(UNVISITED)
   vis.append(tmp)
 
+for i in range(image.size[0]):
+  vis[i][0] = VISITED
+  vis[i][image.size[1] - 1] = VISITED
+for i in range(image.size[1]):
+  vis[0][i] = VISITED
+  vis[image.size[0] - 1][i] = VISITED
+
 window = tk.Tk()
 window.geometry(str(image.size[0]) + 'x' + str(image.size[1]))
 
@@ -76,21 +83,19 @@ patterns = {'fill'       : simple_fill,
             'cross'      : cross_hatch,
 }
 
-pattern = args.pattern
-
 def shade_horizontally(point):
   x, y = point[0], point[1]
 
   dx = 1
-  while pixels[x + dx, y] == interior_color:
-    patterns[pattern]((x + dx, y))
+  while pixels[x + dx, y] == interior_color and vis[x + dx][y] != VISITED:
+    patterns[args.pattern]((x + dx, y))
     vis[x + dx][y] = VISITED
     dx += 1
   rightb = (x + dx, y)
 
   dx = 0
-  while pixels[x + dx, y] == interior_color:
-    patterns[pattern]((x + dx, y))
+  while pixels[x + dx, y] == interior_color and vis[x + dx][y] != VISITED:
+    patterns[args.pattern]((x + dx, y))
     vis[x + dx][y] = VISITED
     dx -= 1 
   leftb = (x + dx, y)
