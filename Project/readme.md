@@ -10,9 +10,7 @@ optional arguments:
   -f FILE, --file FILE  Choose an input file  
   -o OUT, --out OUT     Choose output file  
   -cp CUSTOM_PATTERN, --custom-pattern CUSTOM_PATTERN
-                        Choose a file to use as custom fill pattern. The file
-                        must be atleast the same size as your input image.  
-
+                        Choose a file to use as custom fill pattern.
 Example usage:  
 
 `python3 refactor.py -f smiley.png -o out.png -p custom -cp custom.png`  
