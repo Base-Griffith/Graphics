@@ -1,16 +1,22 @@
-import argparse
+from argparse import ArgumentParser
+from os import uname
+import subprocess
 import tkinter as tk
 from PIL import Image, ImageTk
 from random import random
 from colors import colors
 
-parser = argparse.ArgumentParser(description='Shade arbitrary closed regions')
+parser = ArgumentParser(description='Shade arbitrary closed regions')
 parser.add_argument('-c', '--color', type=str, default='green',
                     help='Choose a color')
 parser.add_argument('-p', '--pattern', type=str, default='cross',
                     help='Choose a shading pattern')
 parser.add_argument('-f', '--file', type=str, default='smiley.png',
                     help='Choose an input file')
+parser.add_argument('-o', '--out', type=str, default='test.png',
+                    help='Choose output file.')
+parser.add_argument('-cp', '--custom-pattern', type=str,
+                    help='Choose a file to use as custom fill pattern. The file                          must be the same size as your input image.')
 args = parser.parse_args()
 
 image = Image.open(args.file)
@@ -25,6 +31,7 @@ for i in range(image.size[1]):
     tmp.append(UNVISITED)
   vis.append(tmp)
 
+# Adding an invisible border around the edges
 for i in range(image.size[0]):
   vis[i][0] = VISITED
   vis[i][image.size[1] - 1] = VISITED
@@ -59,28 +66,45 @@ def simple_fill(point):
 
 def random_fill(point):
   # Set density of fill below
-  if random() < 0.1:
+  if random() < 0.2:
     pixels[point] = color 
 
 def vertical_fill(point):
   # Set density of lines below
-  if point[0] % 7 == 0:
+  if point[0] % 5 == 0:
     pixels[point] = color
 
 def horizontal_fill(point):
   # Set density of lines below
-  if point[1] % 9 == 0:
+  if point[1] % 5 == 0:
     pixels[point] = color
 
 def cross_hatch(point):
   vertical_fill(point)
   horizontal_fill(point)
 
+def empty_func(point):
+  return
+
+def custom_fill():
+  if args.custom_pattern:
+    if args.pattern != 'custom':
+      print('Please add -p custom to use a custom fill pattern. Exiting.')
+      exit(0)
+    else:
+      custom_image = Image.open(args.custom_pattern)
+      custom_pixels = custom_image.load()
+      for x in range(image.size[0]):
+        for y in range(image.size[1]):
+          if vis[x][y]:
+            pixels[x, y] = custom_pixels[x, y] 
+
 patterns = {'fill'       : simple_fill,
             'random'     : random_fill,
             'vertical'   : vertical_fill,
             'horizontal' : horizontal_fill,
             'cross'      : cross_hatch,
+            'custom'     : empty_func,
 }
 
 def shade_horizontally(point):
@@ -148,7 +172,6 @@ def shade(event):
 
   # Initialise agenda.
   # Note: All lines on the agenda have to be shaded when first accessed.
-
   agenda[UP].append(origin)
   agenda[DOWN].append((origin[0], origin[1] - 1))
 
@@ -160,7 +183,13 @@ def shade(event):
     leftb, rightb = shade_horizontally(point)
     find_turns(point, leftb, rightb)
 
-  image.save('test.png')
+  custom_fill()
+
+  image.save(args.out)
+
+  if uname()[0] == 'Linux':
+    subprocess.run(['eog', args.out])
+
   exit(0)
 
 window.bind('<Button 1>', shade)
