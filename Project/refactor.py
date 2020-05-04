@@ -94,10 +94,14 @@ def custom_fill():
     else:
       custom_image = Image.open(args.custom_pattern)
       custom_pixels = custom_image.load()
+
+      customx = custom_image.size[0]
+      customy = custom_image.size[1]
+
       for x in range(image.size[0]):
         for y in range(image.size[1]):
           if vis[x][y]:
-            pixels[x, y] = custom_pixels[x, y] 
+            pixels[x, y] = custom_pixels[x % customx, y % customy] 
 
 patterns = {'fill'       : simple_fill,
             'random'     : random_fill,
@@ -186,6 +190,8 @@ def shade(event):
   custom_fill()
 
   image.save(args.out)
+  
+  window.destroy()
 
   if uname()[0] == 'Linux':
     subprocess.run(['eog', args.out])
