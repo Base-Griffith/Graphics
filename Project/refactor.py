@@ -1,9 +1,19 @@
+import argparse
 import tkinter as tk
 from PIL import Image, ImageTk
 from random import random
 from colors import colors
 
-image = Image.open('smiley.png')
+parser = argparse.ArgumentParser(description='Shade arbitrary closed regions')
+parser.add_argument('-c', '--color', type=str, default='green',
+                    help='Choose a color')
+parser.add_argument('-p', '--pattern', type=str, default='cross',
+                    help='Choose a shading pattern')
+parser.add_argument('-f', '--file', type=str, default='smiley.png',
+                    help='Choose an input file')
+args = parser.parse_args()
+
+image = Image.open(args.file)
 pixels = image.load()
 
 vis = []
@@ -32,7 +42,7 @@ agenda = {UP : uplist, DOWN : downlist}
 
 origin = (0, 0)
 interior_color = (0, 0, 0, 0)
-color = colors['orange']
+color = colors[args.color]
 
 # Note: Y axis is inverted on the screen.
 vdir = UP
@@ -41,6 +51,7 @@ def simple_fill(point):
   pixels[point] = color
 
 def random_fill(point):
+  # Set density of fill below
   if random() < 0.1:
     pixels[point] = color 
 
@@ -58,26 +69,28 @@ def cross_hatch(point):
   vertical_fill(point)
   horizontal_fill(point)
 
-patterns = {'fill' : simple_fill,
-            'random' : random_fill,
-            'vertical' : vertical_fill,
+patterns = {'fill'       : simple_fill,
+            'random'     : random_fill,
+            'vertical'   : vertical_fill,
             'horizontal' : horizontal_fill,
-            'cross' : cross_hatch,
+            'cross'      : cross_hatch,
 }
+
+pattern = args.pattern
 
 def shade_horizontally(point):
   x, y = point[0], point[1]
 
   dx = 1
   while pixels[x + dx, y] == interior_color:
-    patterns['cross']((x + dx, y))
+    patterns[pattern]((x + dx, y))
     vis[x + dx][y] = VISITED
     dx += 1
   rightb = (x + dx, y)
 
   dx = 0
   while pixels[x + dx, y] == interior_color:
-    patterns['cross']((x + dx, y))
+    patterns[pattern]((x + dx, y))
     vis[x + dx][y] = VISITED
     dx -= 1 
   leftb = (x + dx, y)
