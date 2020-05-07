@@ -16,7 +16,7 @@ parser.add_argument('-f', '--file', type=str, default='smiley.png',
 parser.add_argument('-o', '--out', type=str, default='test.png',
                     help='Choose output file.')
 parser.add_argument('-cp', '--custom-pattern', type=str,
-                    help='Choose a file to use as custom fill pattern. The file                          must be the same size as your input image.')
+                    help='Choose a file to use as custom fill pattern.')
 args = parser.parse_args()
 
 image = Image.open(args.file)
@@ -25,9 +25,9 @@ pixels = image.load()
 vis = []
 VISITED = 1
 UNVISITED = 0
-for i in range(image.size[1]):
+for i in range(image.size[0]):
   tmp = []
-  for j in range(image.size[0]):
+  for j in range(image.size[1]):
     tmp.append(UNVISITED)
   vis.append(tmp)
 
