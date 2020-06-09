@@ -1,5 +1,7 @@
 # Shading Arbitrary Closed Regions
 
+## To implement the paper [How to colour in a Colouring Book](http://web.media.mit.edu/~lieber/Publications/Coloring-Book.pdf), Henry Lieberman 
+
 **Usage**  
 optional arguments:
   -h, --help            show this help message and exit  
