@@ -6,4 +6,5 @@ F G <br>
 and Arrow Keys to move the scene </p>
 <br>
 To compile the code 
+
 `g++ *cpp -lGL -lGLU -lglut`
